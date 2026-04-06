@@ -7,6 +7,7 @@ import (
 	"github.com/tmazitov/ayda-order-service.git/api/docs"
 	restExpense "github.com/tmazitov/ayda-order-service.git/api/rest/expense"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
+	"github.com/tmazitov/ayda-order-service.git/api/rest/validator"
 	"github.com/tmazitov/ayda-order-service.git/config"
 	"github.com/tmazitov/ayda-order-service.git/internal/app"
 	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql"
@@ -29,8 +30,11 @@ func main() {
 
 	application := app.NewApp(db)
 
-	fiberApp := fiber.New()
+	fiberApp := fiber.New(fiber.Config{
+		StructValidator: validator.New(),
+	})
 	fiberApp.Use(middleware.ErrorHandler)
+
 
 	docs.NewRouter().Register(fiberApp)
 	restExpense.NewRouter(application.ExpenseService()).Register(fiberApp)
