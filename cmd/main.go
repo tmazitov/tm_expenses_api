@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/tmazitov/ayda-order-service.git/api/docs"
 	restExpense "github.com/tmazitov/ayda-order-service.git/api/rest/expense"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
 	"github.com/tmazitov/ayda-order-service.git/config"
@@ -28,6 +29,7 @@ func main() {
 	fiberApp := fiber.New()
 	fiberApp.Use(middleware.ErrorHandler)
 
+	docs.NewRouter().Register(fiberApp)
 	restExpense.NewRouter(application.ExpenseService()).Register(fiberApp)
 
 	log.Fatal(fiberApp.Listen(":8080"))
