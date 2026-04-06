@@ -9,7 +9,7 @@ import (
 )
 
 type CreateExpenseRequest struct {
-	Name string `json:"name" validate:"required,min=1"`
+	Name string `json:"name" validate:"required,min=1,max=255"`
 }
 
 type CreateExpenseResponse struct {
@@ -37,11 +37,12 @@ func (r *Router) Create() fiber.Handler {
 			Name: req.Name,
 		})
 		if err != nil {
-			if errors.Is(err, expenseDomain.ErrInvalidExpense) {
+			var expenseErr *expenseDomain.ExpenseError
+
+			if errors.As(err, &expenseErr) {
 				return ctx.SendStatus(fiber.StatusBadRequest)
-			} else {
-				return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 			}
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
 
 		return ctx.Status(fiber.StatusCreated).

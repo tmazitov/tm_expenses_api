@@ -3,18 +3,22 @@ package expense
 import "github.com/google/uuid"
 
 type Expense struct {
-	id   string `validate:"required,min=1"`
-	name string `validate:"required,min=1"`
+	id   string
+	name string
 }
 
-func NewExpense(name string) (*Expense, error) {
+func NewExpense(id uuid.UUID, name string) (*Expense, error) {
 
 	if len(name) == 0 {
-		return nil, ErrInvalidExpense
+		return nil, ErrEmptyName
+	}
+
+	if len(name) >= 256 {
+		return nil, ErrNameTooLong
 	}
 
 	return &Expense{
-		id:   uuid.NewString(),
+		id:   id.String(),
 		name: name,
 	}, nil
 }
