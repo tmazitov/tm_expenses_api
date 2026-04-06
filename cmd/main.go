@@ -12,6 +12,9 @@ import (
 	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql"
 )
 
+// @title           Expense Tracker API
+// @version         1.0
+// @host            localhost:8080
 func main() {
 	c, err := config.NewConfig()
 	if err != nil {

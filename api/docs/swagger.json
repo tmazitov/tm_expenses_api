@@ -1,71 +1,72 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Expense Tracker API",
-    "version": "1.0.0"
-  },
-  "paths": {
-    "/expenses": {
-      "post": {
-        "summary": "Create expense",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateExpenseRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Expense created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateExpenseResponse"
+    "swagger": "2.0",
+    "info": {
+        "title": "Expense Tracker API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "paths": {
+        "/expense": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create expense",
+                "parameters": [
+                    {
+                        "description": "Expense data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/expense.CreateExpenseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/expense.CreateExpenseResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
                 }
-              }
             }
-          },
-          "400": {
-            "description": "Invalid request"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
         }
-      }
+    },
+    "definitions": {
+        "expense.CreateExpenseRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "expense.CreateExpenseResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
     }
-  },
-  "components": {
-    "schemas": {
-      "CreateExpenseRequest": {
-        "type": "object",
-        "required": ["name"],
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "example": "Coffee"
-          }
-        }
-      },
-      "CreateExpenseResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "550e8400-e29b-41d4-a716-446655440000"
-          },
-          "name": {
-            "type": "string",
-            "example": "Coffee"
-          }
-        }
-      }
-    }
-  }
 }

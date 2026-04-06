@@ -17,6 +17,14 @@ type CreateExpenseResponse struct {
 	Name string `json:"name"`
 }
 
+// @Summary  Create expense
+// @Accept   json
+// @Produce  json
+// @Param    body body     CreateExpenseRequest  true  "Expense data"
+// @Success  201  {object} CreateExpenseResponse
+// @Failure  400
+// @Failure  500
+// @Router   /expense [post]
 func (r *Router) Create() fiber.Handler {
 	return func(ctx fiber.Ctx) error {
 		var req CreateExpenseRequest

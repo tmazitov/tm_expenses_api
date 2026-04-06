@@ -16,6 +16,6 @@ func NewRouter(service *expense.Service) *Router {
 }
 
 func (r *Router) Register(a *fiber.App) {
-	a.Group("/expenses").
+	a.Group("/expense").
 		Post("/", r.Create())
 }
