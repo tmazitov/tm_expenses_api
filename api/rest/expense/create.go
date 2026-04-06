@@ -1,0 +1,45 @@
+package expense
+
+import (
+	"errors"
+
+	"github.com/gofiber/fiber/v3"
+	"github.com/tmazitov/ayda-order-service.git/internal/app/expense"
+	expenseDomain "github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
+)
+
+type CreateExpenseRequest struct {
+	Name string `json:"name" validate:"required,min=1"`
+}
+
+type CreateExpenseResponse struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+func (r *Router) Create() fiber.Handler {
+	return func(ctx fiber.Ctx) error {
+		var req CreateExpenseRequest
+
+		if err := ctx.Bind().JSON(&req); err != nil {
+			return ctx.SendStatus(fiber.StatusBadRequest)
+		}
+
+		output, err := r.service.Create(ctx, expense.CreateExpenseForm{
+			Name: req.Name,
+		})
+		if err != nil {
+			if errors.Is(err, expenseDomain.ErrInvalidExpense) {
+				return ctx.SendStatus(fiber.StatusBadRequest)
+			} else {
+				return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+			}
+		}
+
+		return ctx.Status(fiber.StatusCreated).
+			JSON(CreateExpenseResponse{
+				Id:   output.Id,
+				Name: output.Name,
+			})
+	}
+}

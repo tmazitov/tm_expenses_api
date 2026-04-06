@@ -1,0 +1,14 @@
+version: '3'
+
+tasks:
+  dev:
+    desc: "Run service in dev mode."
+    cmd: go run ./cmd/main.go
+  
+  init_db:
+    desc: "Initiate a database for dev purposes."
+    cmd: cd scripts && bash ./init_database.sh
+
+  migrate:
+    desc: "Create a new migration file using goose"
+    cmd: cd scripts && bash ./goose_add_migration.sh

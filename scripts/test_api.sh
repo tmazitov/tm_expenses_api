@@ -1,0 +1,19 @@
+#!/bin/bash
+
+BASE_URL="http://localhost:8080"
+
+echo "--- 1. Create expense (valid) ---"
+curl -s -w "\nStatus: %{http_code}\n" -X POST "$BASE_URL/expenses" \
+    -H "Content-Type: application/json" \
+    -d '{"name": "Coffee"}' | cat
+
+echo ""
+echo "--- 2. Create expense (empty name) ---"
+curl -s -w "\nStatus: %{http_code}\n" -X POST "$BASE_URL/expenses" \
+    -H "Content-Type: application/json" \
+    -d '{"name": ""}' | cat
+
+echo ""
+echo "--- 3. Create expense (missing body) ---"
+curl -s -w "\nStatus: %{http_code}\n" -X POST "$BASE_URL/expenses" \
+    -H "Content-Type: application/json" | cat
