@@ -4,13 +4,11 @@ import "github.com/tmazitov/ayda-order-service.git/internal/app/expense"
 
 type App struct {
 	expenseService *expense.Service
-	db             DB
 }
 
 func NewApp(db DB) *App {
 	return &App{
 		expenseService: expense.NewService(db.ExpenseRepo()),
-		db:             db,
 	}
 }
 

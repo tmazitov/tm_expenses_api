@@ -1,15 +1,22 @@
 package expense
 
 import (
+	"context"
+
 	"github.com/gofiber/fiber/v3"
-	"github.com/tmazitov/ayda-order-service.git/internal/app/expense"
+	appExpense "github.com/tmazitov/ayda-order-service.git/internal/app/expense"
 )
 
-type Router struct {
-	service *expense.Service
+type ExpenseService interface {
+	Create(ctx context.Context, input appExpense.CreateExpenseForm) (*appExpense.ExpenseOutput, error)
+	List(ctx context.Context, input appExpense.ListExpenseInput) (*appExpense.ListExpenseOutput, error)
 }
 
-func NewRouter(service *expense.Service) *Router {
+type Router struct {
+	service ExpenseService
+}
+
+func NewRouter(service ExpenseService) *Router {
 	return &Router{
 		service: service,
 	}

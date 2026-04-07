@@ -14,7 +14,6 @@ type ListExpenseInput struct {
 
 type ListExpenseOutput struct {
 	Items []ExpenseListItem
-	Total int
 }
 
 type ExpenseListItem struct {

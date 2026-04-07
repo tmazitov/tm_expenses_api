@@ -1,7 +1,5 @@
 package expense
 
-import "github.com/google/uuid"
-
 type Expense struct {
 	id   string
 	name string
@@ -19,7 +17,9 @@ func validationCheck(name string) error {
 	return nil
 }
 
-func RestoreExpense(id, name string) (*Expense, error) {
+// Creates new instance of Expense.
+func NewExpense(id, name string) (*Expense, error) {
+
 	if err := validationCheck(name); err != nil {
 		return nil, err
 	}
@@ -30,14 +30,14 @@ func RestoreExpense(id, name string) (*Expense, error) {
 	}, nil
 }
 
-func NewExpense(name string) (*Expense, error) {
-
+// Allows to restore previously saved instance of Expense.
+func RestoreExpense(id, name string) (*Expense, error) {
 	if err := validationCheck(name); err != nil {
 		return nil, err
 	}
 
 	return &Expense{
-		id:   uuid.NewString(),
+		id:   id,
 		name: name,
 	}, nil
 }
