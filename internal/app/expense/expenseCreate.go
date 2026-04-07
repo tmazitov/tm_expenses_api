@@ -3,7 +3,6 @@ package expense
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
 )
 
@@ -17,7 +16,7 @@ type ExpenseOutput struct {
 }
 
 func (s *Service) Create(ctx context.Context, input CreateExpenseForm) (*ExpenseOutput, error) {
-	e, err := expense.NewExpense(uuid.New(), input.Name)
+	e, err := expense.NewExpense(input.Name)
 	if err != nil {
 		return nil, err
 	}

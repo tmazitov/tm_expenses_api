@@ -21,6 +21,4 @@ func NewRepository(db *bun.DB) *Repository {
 func (er *Repository) GetById(ctx context.Context, id string) (*expense.Expense, error) {
 	return nil, nil
 }
-func (er *Repository) List(ctx context.Context) ([]*expense.Expense, error) {
-	return nil, nil
-}
+

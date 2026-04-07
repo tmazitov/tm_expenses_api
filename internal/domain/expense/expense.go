@@ -7,18 +7,37 @@ type Expense struct {
 	name string
 }
 
-func NewExpense(id uuid.UUID, name string) (*Expense, error) {
-
+func validationCheck(name string) error {
 	if len(name) == 0 {
-		return nil, ErrEmptyName
+		return ErrEmptyName
 	}
 
 	if len(name) >= 256 {
-		return nil, ErrNameTooLong
+		return ErrNameTooLong
+	}
+
+	return nil
+}
+
+func RestoreExpense(id, name string) (*Expense, error) {
+	if err := validationCheck(name); err != nil {
+		return nil, err
 	}
 
 	return &Expense{
-		id:   id.String(),
+		id:   id,
+		name: name,
+	}, nil
+}
+
+func NewExpense(name string) (*Expense, error) {
+
+	if err := validationCheck(name); err != nil {
+		return nil, err
+	}
+
+	return &Expense{
+		id:   uuid.NewString(),
 		name: name,
 	}, nil
 }
