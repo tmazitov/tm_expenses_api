@@ -5,12 +5,14 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/joho/godotenv"
 	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql"
 )
 
 type config struct {
-	DB postgresql.Config
+	DB   postgresql.Config
+	CORS cors.Config
 }
 
 func getenvDefault(variable string, defaultValue string) string {
@@ -31,6 +33,8 @@ func NewConfig() (*config, error) {
 		return nil, fmt.Errorf("config: DB_PORT must be a number: %w", err)
 	}
 
+	cors := NewCORSConfig()
+
 	return &config{
 		DB: postgresql.Config{
 			Host:     getenvDefault("DB_HOST", "localhost"),
@@ -40,5 +44,6 @@ func NewConfig() (*config, error) {
 			DBName:   getenvDefault("DB_NAME", "expense_db"),
 			SSLMode:  getenvDefault("DB_SSL_MODE", "disable"),
 		},
+		CORS: cors,
 	}, nil
 }

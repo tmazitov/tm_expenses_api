@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/tmazitov/ayda-order-service.git/api/docs"
 	restExpense "github.com/tmazitov/ayda-order-service.git/api/rest/expense"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
@@ -34,7 +35,7 @@ func main() {
 		StructValidator: validator.New(),
 	})
 	fiberApp.Use(middleware.ErrorHandler)
-
+	fiberApp.Use(cors.New(c.CORS))
 
 	docs.NewRouter().Register(fiberApp)
 	restExpense.NewRouter(application.ExpenseService()).Register(fiberApp)
