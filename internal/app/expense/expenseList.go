@@ -2,6 +2,7 @@ package expense
 
 import (
 	"context"
+	"time"
 
 	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
 )
@@ -17,8 +18,17 @@ type ListExpenseOutput struct {
 }
 
 type ExpenseListItem struct {
-	Id   string
-	Name string
+	Id        string
+	Name      string
+	CreatedAt time.Time
+}
+
+func NewExpenseListItem(e *expense.Expense) ExpenseListItem {
+	return ExpenseListItem{
+		Id:        e.Id(),
+		Name:      e.Name(),
+		CreatedAt: e.CreatedAt(),
+	}
 }
 
 func (s *Service) List(ctx context.Context, input ListExpenseInput) (*ListExpenseOutput, error) {
@@ -35,7 +45,7 @@ func (s *Service) List(ctx context.Context, input ListExpenseInput) (*ListExpens
 
 	result := &ListExpenseOutput{}
 	for _, e := range items {
-		result.Items = append(result.Items, ExpenseListItem{Id: e.Id(), Name: e.Name()})
+		result.Items = append(result.Items, NewExpenseListItem(e))
 	}
 	return result, nil
 }

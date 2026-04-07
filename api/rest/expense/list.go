@@ -2,6 +2,7 @@ package expense
 
 import (
 	"errors"
+	"time"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/tmazitov/ayda-order-service.git/internal/app/expense"
@@ -20,8 +21,9 @@ type ListExpenseResponse struct {
 }
 
 type ListExpenseItem struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id        string    `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 // @Summary  List expenses
@@ -60,8 +62,9 @@ func (r *Router) List() fiber.Handler {
 
 		for _, item := range list.Items {
 			result.Items = append(result.Items, ListExpenseItem{
-				Id:   item.Id,
-				Name: item.Name,
+				Id:        item.Id,
+				Name:      item.Name,
+				CreatedAt: item.CreatedAt,
 			})
 		}
 

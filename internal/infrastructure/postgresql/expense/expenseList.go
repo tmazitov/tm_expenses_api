@@ -24,7 +24,7 @@ func (r *Repository) List(ctx context.Context, filters expense.ListFilters) ([]*
 
 	result := make([]*expense.Expense, 0, len(models))
 	for _, m := range models {
-		e, err := expense.RestoreExpense(m.Id, m.Name)
+		e, err := expense.RestoreExpense(m.Id, m.Name, m.CreatedAt)
 		if err != nil {
 			return nil, err
 		}

@@ -2,6 +2,7 @@ package expense
 
 import (
 	"errors"
+	"time"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/tmazitov/ayda-order-service.git/internal/app/expense"
@@ -13,8 +14,9 @@ type CreateExpenseRequest struct {
 }
 
 type CreateExpenseResponse struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
+	Id        string    `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 // @Summary  Create expense
@@ -47,8 +49,9 @@ func (r *Router) Create() fiber.Handler {
 
 		return ctx.Status(fiber.StatusCreated).
 			JSON(CreateExpenseResponse{
-				Id:   output.Id,
-				Name: output.Name,
+				Id:        output.Id,
+				Name:      output.Name,
+				CreatedAt: output.CreatedAt,
 			})
 	}
 }

@@ -2,6 +2,7 @@ package expense
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
@@ -12,8 +13,9 @@ type CreateExpenseForm struct {
 }
 
 type ExpenseOutput struct {
-	Id   string
-	Name string
+	Id        string
+	Name      string
+	CreatedAt time.Time
 }
 
 func (s *Service) Create(ctx context.Context, input CreateExpenseForm) (*ExpenseOutput, error) {
@@ -27,7 +29,8 @@ func (s *Service) Create(ctx context.Context, input CreateExpenseForm) (*Expense
 	}
 
 	return &ExpenseOutput{
-		Id:   e.Id(),
-		Name: e.Name(),
+		Id:        e.Id(),
+		Name:      e.Name(),
+		CreatedAt: e.CreatedAt(),
 	}, nil
 }

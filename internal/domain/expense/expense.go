@@ -1,8 +1,11 @@
 package expense
 
+import "time"
+
 type Expense struct {
-	id   string
-	name string
+	id        string
+	name      string
+	createdAt time.Time
 }
 
 func validationCheck(name string) error {
@@ -25,22 +28,25 @@ func NewExpense(id, name string) (*Expense, error) {
 	}
 
 	return &Expense{
-		id:   id,
-		name: name,
+		id:        id,
+		name:      name,
+		createdAt: time.Now(),
 	}, nil
 }
 
 // Allows to restore previously saved instance of Expense.
-func RestoreExpense(id, name string) (*Expense, error) {
+func RestoreExpense(id, name string, createdAt time.Time) (*Expense, error) {
 	if err := validationCheck(name); err != nil {
 		return nil, err
 	}
 
 	return &Expense{
-		id:   id,
-		name: name,
+		id:        id,
+		name:      name,
+		createdAt: createdAt,
 	}, nil
 }
 
-func (e *Expense) Id() string   { return e.id }
-func (e *Expense) Name() string { return e.name }
+func (e *Expense) Id() string           { return e.id }
+func (e *Expense) Name() string         { return e.name }
+func (e *Expense) CreatedAt() time.Time { return e.createdAt }
