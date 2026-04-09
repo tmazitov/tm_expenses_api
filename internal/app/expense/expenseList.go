@@ -12,6 +12,7 @@ type ListExpenseInput struct {
 	Name  string
 	Page  int
 	Limit int
+	Date  time.Time
 }
 
 type ListExpenseOutput struct {
@@ -36,7 +37,12 @@ func NewExpenseListItem(e *expense.Expense) ExpenseListItem {
 
 func (s *Service) List(ctx context.Context, input ListExpenseInput) (*ListExpenseOutput, error) {
 
-	filters, err := expense.NewListFilters(input.Name, input.Page, input.Limit)
+	filters, err := expense.NewListFilters(expense.ListFiltersParams{
+		Name:  input.Name,
+		Date:  input.Date,
+		Page:  input.Page,
+		Limit: input.Limit,
+	})
 	if err != nil {
 		return nil, err
 	}

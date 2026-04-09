@@ -54,6 +54,7 @@ func RestoreExpense(id, name string, price decimal.Decimal, createdAt time.Time)
 	return &Expense{
 		id:        id,
 		name:      name,
+		price:     price,
 		createdAt: createdAt,
 	}, nil
 }

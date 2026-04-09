@@ -2,6 +2,7 @@ package expense
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v3"
@@ -14,6 +15,7 @@ type ListExpenseQuery struct {
 	Name  string `query:"name"`
 	Page  int    `query:"page" validate:"min=0"`
 	Limit int    `query:"limit" validate:"min=0,max=100"`
+	Date  string `query:"date" validate:"required,date=02.01.2006"`
 }
 
 type ListExpenseResponse struct {
@@ -24,11 +26,13 @@ type ListExpenseItem struct {
 	Id        string    `json:"id"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"createdAt"`
+	Price     float64   `json:"price"`
 }
 
 // @Summary  List expenses
 // @Produce  json
 // @Param    name  query    string              false  "Filter by name"
+// @Param    date  query    string              false  "Filter by date (dd.mm.yyyy)"
 // @Param    page  query    int                 false  "Page number (0-based)"  minimum(0)
 // @Param    limit query    int                 false  "Items per page"         minimum(1) maximum(100)
 // @Success  200   {object} ListExpenseResponse
@@ -42,14 +46,20 @@ func (r *Router) List() fiber.Handler {
 			return ctx.SendStatus(fiber.StatusBadRequest)
 		}
 
+		date, err := time.Parse("02.01.2006", filters.Date)
+		if err != nil {
+			return ctx.SendStatus(fiber.StatusBadRequest)
+		}
+
 		list, err := r.service.List(ctx, expense.ListExpenseInput{
 			Name:  filters.Name,
 			Limit: filters.Limit,
 			Page:  filters.Page,
+			Date:  date,
 		})
 		if err != nil {
 			var expenseErr *expenseDomain.ExpenseError
-
+			log.Println(err)
 			if errors.As(err, &expenseErr) {
 				return ctx.SendStatus(fiber.StatusBadRequest)
 			}
@@ -65,6 +75,7 @@ func (r *Router) List() fiber.Handler {
 				Id:        item.Id,
 				Name:      item.Name,
 				CreatedAt: item.CreatedAt,
+				Price:     item.Price.InexactFloat64(),
 			})
 		}
 

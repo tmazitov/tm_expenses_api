@@ -12,6 +12,7 @@ func (r *Repository) List(ctx context.Context, filters expense.ListFilters) ([]*
 
 	q := r.db.NewSelect().
 		Model(&models).
+		Where("created_at::date = ?", filters.Date()).
 		Limit(filters.Limit()).Offset(filters.Page() * filters.Limit())
 
 	if len(filters.Name()) != 0 {
