@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/shopspring/decimal"
 	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
 )
 
@@ -20,6 +21,7 @@ type ListExpenseOutput struct {
 type ExpenseListItem struct {
 	Id        string
 	Name      string
+	Price     decimal.Decimal
 	CreatedAt time.Time
 }
 
@@ -27,6 +29,7 @@ func NewExpenseListItem(e *expense.Expense) ExpenseListItem {
 	return ExpenseListItem{
 		Id:        e.Id(),
 		Name:      e.Name(),
+		Price:     e.Price(),
 		CreatedAt: e.CreatedAt(),
 	}
 }

@@ -9,7 +9,7 @@ import (
 func NewCORSConfig() cors.Config {
 	// Get allowed origins from environment variable (comma-separated)
 	// Example: "http://localhost:8082,http://127.0.0.1:8082,http://192.168.1.100:8082"
-	allowedOriginsRaw := getenvDefault("ALLOWED_ORIGINS", "http://localhost:8082")
+	allowedOriginsRaw := getenvDefault("ALLOWED_ORIGINS", "http://localhost")
 	allowedOrigins := strings.Split(allowedOriginsRaw, ",")
 
 	// Trim whitespace from origins

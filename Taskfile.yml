@@ -15,4 +15,6 @@ tasks:
 
   docs:
     desc: "Generate swagger.json from annotations"
-    cmd: swag init -g cmd/main.go -o api/docs --outputTypes json
+    cmd: swag init -g cmd/main.go --dir ./ -o api/docs --outputTypes json
+
+

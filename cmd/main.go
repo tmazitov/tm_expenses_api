@@ -8,10 +8,10 @@ import (
 	"github.com/tmazitov/ayda-order-service.git/api/docs"
 	restExpense "github.com/tmazitov/ayda-order-service.git/api/rest/expense"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
-	"github.com/tmazitov/ayda-order-service.git/api/rest/validator"
 	"github.com/tmazitov/ayda-order-service.git/config"
 	"github.com/tmazitov/ayda-order-service.git/internal/app"
 	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql"
+	"github.com/tmazitov/ayda-order-service.git/pkg/validator"
 )
 
 // @title           Expense Tracker API

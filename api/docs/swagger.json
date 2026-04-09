@@ -91,13 +91,18 @@
         "expense.CreateExpenseRequest": {
             "type": "object",
             "required": [
-                "name"
+                "name",
+                "price"
             ],
             "properties": {
                 "name": {
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 1
+                },
+                "price": {
+                    "type": "number",
+                    "minimum": 1
                 }
             }
         },
@@ -112,6 +117,9 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },

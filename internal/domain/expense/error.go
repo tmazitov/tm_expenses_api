@@ -21,9 +21,11 @@ func (e *ExpenseError) Error() string {
 }
 
 var (
+	ErrPriceIsNegative = NewExpenseError("NEG_PRICE", "expense: price cannot be negative")
+
 	ErrEmptyName   = NewExpenseError("EMPTY_NAME", "expense: name cannot be empty")
 	ErrNameTooLong = NewExpenseError("NAME_TOO_LONG", "expense: name cannot exceed 255 characters")
 
-	ErrPageIsNegative = NewExpenseError("NEG_PAGE", "expense list: page cannot be negative")
+	ErrPageIsNegative  = NewExpenseError("NEG_PAGE", "expense list: page cannot be negative")
 	ErrLimitIsNegative = NewExpenseError("NEG_LIMIT", "expense list: limit cannot be negative")
 )

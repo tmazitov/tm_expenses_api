@@ -2,20 +2,24 @@ package expense
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/shopspring/decimal"
 	"github.com/tmazitov/ayda-order-service.git/internal/app/expense"
 	expenseDomain "github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
 )
 
 type CreateExpenseRequest struct {
-	Name string `json:"name" validate:"required,min=1,max=255"`
+	Name  string          `json:"name" validate:"required,min=1,max=255"`
+	Price decimal.Decimal `json:"price" validate:"decimal_min=0.01" swaggertype:"number"`
 }
 
 type CreateExpenseResponse struct {
 	Id        string    `json:"id"`
 	Name      string    `json:"name"`
+	Price     float64   `json:"price" `
 	CreatedAt time.Time `json:"createdAt"`
 }
 
@@ -32,16 +36,20 @@ func (r *Router) Create() fiber.Handler {
 		var req CreateExpenseRequest
 
 		if err := ctx.Bind().JSON(&req); err != nil {
+			log.Printf("bind/validate error: %v", err)
 			return ctx.SendStatus(fiber.StatusBadRequest)
 		}
 
 		output, err := r.service.Create(ctx, expense.CreateExpenseForm{
-			Name: req.Name,
+			Name:  req.Name,
+			Price: req.Price,
 		})
 		if err != nil {
+
 			var expenseErr *expenseDomain.ExpenseError
 
 			if errors.As(err, &expenseErr) {
+				log.Println("create expense error: ", err)
 				return ctx.SendStatus(fiber.StatusBadRequest)
 			}
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
@@ -51,6 +59,7 @@ func (r *Router) Create() fiber.Handler {
 			JSON(CreateExpenseResponse{
 				Id:        output.Id,
 				Name:      output.Name,
+				Price:     output.Price.InexactFloat64(),
 				CreatedAt: output.CreatedAt,
 			})
 	}
