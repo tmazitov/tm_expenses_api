@@ -9,10 +9,11 @@ import (
 )
 
 type ListExpenseInput struct {
-	Name  string
-	Page  int
-	Limit int
-	Date  time.Time
+	Name       string
+	CategoryId string
+	Page       int
+	Limit      int
+	Date       time.Time
 }
 
 type ListExpenseOutput struct {
@@ -20,28 +21,31 @@ type ListExpenseOutput struct {
 }
 
 type ExpenseListItem struct {
-	Id        string
-	Name      string
-	Price     decimal.Decimal
-	CreatedAt time.Time
+	Id         string
+	Name       string
+	CategoryId string
+	Price      decimal.Decimal
+	CreatedAt  time.Time
 }
 
 func NewExpenseListItem(e *expense.Expense) ExpenseListItem {
 	return ExpenseListItem{
-		Id:        e.Id(),
-		Name:      e.Name(),
-		Price:     e.Price(),
-		CreatedAt: e.CreatedAt(),
+		Id:         e.Id(),
+		Name:       e.Name(),
+		Price:      e.Price(),
+		CreatedAt:  e.CreatedAt(),
+		CategoryId: e.CategoryId(),
 	}
 }
 
 func (s *Service) List(ctx context.Context, input ListExpenseInput) (*ListExpenseOutput, error) {
 
 	filters, err := expense.NewListFilters(expense.ListFiltersParams{
-		Name:  input.Name,
-		Date:  input.Date,
-		Page:  input.Page,
-		Limit: input.Limit,
+		Name:       input.Name,
+		Date:       input.Date,
+		Page:       input.Page,
+		Limit:      input.Limit,
+		CategoryId: input.CategoryId,
 	})
 	if err != nil {
 		return nil, err

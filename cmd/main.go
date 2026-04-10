@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/tmazitov/ayda-order-service.git/api/docs"
+	restCategory "github.com/tmazitov/ayda-order-service.git/api/rest/category"
 	restExpense "github.com/tmazitov/ayda-order-service.git/api/rest/expense"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
 	"github.com/tmazitov/ayda-order-service.git/config"
@@ -39,6 +40,7 @@ func main() {
 
 	docs.NewRouter().Register(fiberApp)
 	restExpense.NewRouter(application.ExpenseService()).Register(fiberApp)
+	restCategory.NewRouter(application.CategoryService()).Register(fiberApp)
 
 	log.Fatal(fiberApp.Listen(":8080"))
 }

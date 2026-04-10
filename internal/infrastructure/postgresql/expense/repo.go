@@ -1,27 +1,22 @@
 package expense
 
 import (
-	"time"
+	"context"
 
-	"github.com/shopspring/decimal"
 	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
 	"github.com/uptrace/bun"
 )
 
-type expenseModel struct {
-	bun.BaseModel `bun:"table:expense"`
-
-	Id        string          `bun:"id,pk"`
-	Name      string          `bun:"name,notnull"`
-	Price     decimal.Decimal `bun:"price,notnull"`
-	CreatedAt time.Time       `bun:"created_at,notnull"`
+type Repository struct {
+	db *bun.DB
 }
 
-func newExpenseModel(expense *expense.Expense) *expenseModel {
-	return &expenseModel{
-		Id:        expense.Id(),
-		Name:      expense.Name(),
-		CreatedAt: expense.CreatedAt(),
-		Price:     expense.Price(),
+func NewRepository(db *bun.DB) *Repository {
+	return &Repository{
+		db: db,
 	}
+}
+
+func (er *Repository) GetById(ctx context.Context, id string) (*expense.Expense, error) {
+	return nil, nil
 }

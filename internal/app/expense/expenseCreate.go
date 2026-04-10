@@ -10,19 +10,26 @@ import (
 )
 
 type CreateExpenseForm struct {
-	Name  string
-	Price decimal.Decimal
+	Name       string
+	CategoryId string
+	Price      decimal.Decimal
 }
 
 type ExpenseOutput struct {
-	Id        string
-	Name      string
-	Price     decimal.Decimal
-	CreatedAt time.Time
+	Id         string
+	Name       string
+	CategoryId string
+	Price      decimal.Decimal
+	CreatedAt  time.Time
 }
 
-func (s *Service) Create(ctx context.Context, input CreateExpenseForm) (*ExpenseOutput, error) {
-	e, err := expense.NewExpense(uuid.NewString(), input.Name, input.Price)
+func (s *Service) Create(ctx context.Context, form CreateExpenseForm) (*ExpenseOutput, error) {
+	e, err := expense.NewExpense(expense.ExpenseParams{
+		Id:         uuid.NewString(),
+		Name:       form.Name,
+		CategoryId: form.CategoryId,
+		Price:      form.Price,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -32,9 +39,10 @@ func (s *Service) Create(ctx context.Context, input CreateExpenseForm) (*Expense
 	}
 
 	return &ExpenseOutput{
-		Id:        e.Id(),
-		Name:      e.Name(),
-		Price:     e.Price(),
-		CreatedAt: e.CreatedAt(),
+		Id:         e.Id(),
+		Name:       e.Name(),
+		CategoryId: e.CategoryId(),
+		Price:      e.Price(),
+		CreatedAt:  e.CreatedAt(),
 	}, nil
 }

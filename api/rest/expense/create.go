@@ -12,18 +12,21 @@ import (
 )
 
 type CreateExpenseRequest struct {
-	Name  string          `json:"name" validate:"required,min=1,max=255"`
-	Price decimal.Decimal `json:"price" validate:"decimal_min=0.01" swaggertype:"number"`
+	Name       string          `json:"name" validate:"required,min=1,max=255"`
+	CategoryId string          `json:"categoryId" validate:"omitempty,uuid"`
+	Price      decimal.Decimal `json:"price" validate:"decimal_min=0.01" swaggertype:"number"`
 }
 
 type CreateExpenseResponse struct {
-	Id        string    `json:"id"`
-	Name      string    `json:"name"`
-	Price     float64   `json:"price" `
-	CreatedAt time.Time `json:"createdAt"`
+	Id         string    `json:"id"`
+	Name       string    `json:"name"`
+	CategoryId string    `json:"categoryId,omitempty"`
+	Price      float64   `json:"price"`
+	CreatedAt  time.Time `json:"createdAt"`
 }
 
 // @Summary  Create expense
+// @Tags     expense
 // @Accept   json
 // @Produce  json
 // @Param    body body     CreateExpenseRequest  true  "Expense data"
@@ -36,13 +39,13 @@ func (r *Router) Create() fiber.Handler {
 		var req CreateExpenseRequest
 
 		if err := ctx.Bind().JSON(&req); err != nil {
-			log.Printf("bind/validate error: %v", err)
 			return ctx.SendStatus(fiber.StatusBadRequest)
 		}
 
 		output, err := r.service.Create(ctx, expense.CreateExpenseForm{
-			Name:  req.Name,
-			Price: req.Price,
+			Name:       req.Name,
+			Price:      req.Price,
+			CategoryId: req.CategoryId,
 		})
 		if err != nil {
 
@@ -57,10 +60,11 @@ func (r *Router) Create() fiber.Handler {
 
 		return ctx.Status(fiber.StatusCreated).
 			JSON(CreateExpenseResponse{
-				Id:        output.Id,
-				Name:      output.Name,
-				Price:     output.Price.InexactFloat64(),
-				CreatedAt: output.CreatedAt,
+				Id:         output.Id,
+				Name:       output.Name,
+				CategoryId: output.CategoryId,
+				Price:      output.Price.InexactFloat64(),
+				CreatedAt:  output.CreatedAt,
 			})
 	}
 }

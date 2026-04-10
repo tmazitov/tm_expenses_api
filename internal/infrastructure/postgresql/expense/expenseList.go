@@ -19,13 +19,23 @@ func (r *Repository) List(ctx context.Context, filters expense.ListFilters) ([]*
 		q = q.Where("name ILIKE ?", "%"+filters.Name()+"%")
 	}
 
+	if len(filters.CategoryId()) != 0 {
+		q = q.Where("category_id = ?", filters.CategoryId())
+	}
+
 	if err := q.Scan(ctx); err != nil {
 		return nil, errors.Join(ErrSelectionFailed, err)
 	}
 
 	result := make([]*expense.Expense, 0, len(models))
 	for _, m := range models {
-		e, err := expense.RestoreExpense(m.Id, m.Name, m.Price, m.CreatedAt)
+		e, err := expense.NewExpense(expense.ExpenseParams{
+			Id:         m.Id,
+			Name:       m.Name,
+			Price:      m.Price,
+			CreatedAt:  m.CreatedAt,
+			CategoryId: m.CategoryId,
+		})
 		if err != nil {
 			return nil, err
 		}

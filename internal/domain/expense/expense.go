@@ -7,23 +7,32 @@ import (
 )
 
 type Expense struct {
-	id        string
-	name      string
-	price     decimal.Decimal
-	createdAt time.Time
+	id         string
+	name       string
+	categoryId string
+	price      decimal.Decimal
+	createdAt  time.Time
 }
 
-func validationCheck(name string, price decimal.Decimal) error {
+type ExpenseParams struct {
+	Id         string
+	Name       string
+	CategoryId string
+	Price      decimal.Decimal
+	CreatedAt  time.Time
+}
 
-	if price.Cmp(decimal.NewFromInt(0)) != 1 {
+func (p ExpenseParams) validate() error {
+
+	if p.Price.Cmp(decimal.NewFromInt(0)) != 1 {
 		return ErrPriceIsNegative
 	}
 
-	if len(name) == 0 {
+	if len(p.Name) == 0 {
 		return ErrEmptyName
 	}
 
-	if len(name) >= 256 {
+	if len(p.Name) >= 256 {
 		return ErrNameTooLong
 	}
 
@@ -31,35 +40,23 @@ func validationCheck(name string, price decimal.Decimal) error {
 }
 
 // Creates new instance of Expense.
-func NewExpense(id, name string, price decimal.Decimal) (*Expense, error) {
+func NewExpense(params ExpenseParams) (*Expense, error) {
 
-	if err := validationCheck(name, price); err != nil {
+	if err := params.validate(); err != nil {
 		return nil, err
 	}
 
 	return &Expense{
-		id:        id,
-		name:      name,
-		price:     price,
-		createdAt: time.Now(),
+		id:         params.Id,
+		name:       params.Name,
+		price:      params.Price,
+		categoryId: params.CategoryId,
+		createdAt:  params.CreatedAt,
 	}, nil
 }
 
-// Allows to restore previously saved instance of Expense.
-func RestoreExpense(id, name string, price decimal.Decimal, createdAt time.Time) (*Expense, error) {
-	if err := validationCheck(name, price); err != nil {
-		return nil, err
-	}
-
-	return &Expense{
-		id:        id,
-		name:      name,
-		price:     price,
-		createdAt: createdAt,
-	}, nil
-}
-
-func (e *Expense) Id() string             { return e.id }
-func (e *Expense) Name() string           { return e.name }
-func (e *Expense) Price() decimal.Decimal { return e.price }
-func (e *Expense) CreatedAt() time.Time   { return e.createdAt }
+func (e Expense) Id() string             { return e.id }
+func (e Expense) Name() string           { return e.name }
+func (e Expense) CategoryId() string     { return e.categoryId }
+func (e Expense) Price() decimal.Decimal { return e.price }
+func (e Expense) CreatedAt() time.Time   { return e.createdAt }

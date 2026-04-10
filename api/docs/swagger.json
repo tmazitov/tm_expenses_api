@@ -7,10 +7,75 @@
     },
     "host": "localhost:8080",
     "paths": {
+        "/category": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "category"
+                ],
+                "summary": "List categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/category.CategoryListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "category"
+                ],
+                "summary": "Create category",
+                "parameters": [
+                    {
+                        "description": "Category data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/category.CreateCategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/category.CreateCategoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/expense": {
             "get": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "expense"
                 ],
                 "summary": "List expenses",
                 "parameters": [
@@ -40,6 +105,12 @@
                         "description": "Items per page",
                         "name": "limit",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by category UUID",
+                        "name": "category",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -63,6 +134,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "expense"
                 ],
                 "summary": "Create expense",
                 "parameters": [
@@ -94,12 +168,80 @@
         }
     },
     "definitions": {
+        "api_rest_category.CategoryListItem": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "category.CategoryListResponse": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/api_rest_category.CategoryListItem"
+                    }
+                }
+            }
+        },
+        "category.CreateCategoryRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
+        "category.CreateCategoryResponse": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "expense.CreateExpenseRequest": {
             "type": "object",
             "required": [
                 "name"
             ],
             "properties": {
+                "categoryId": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string",
                     "maxLength": 255,
@@ -113,6 +255,9 @@
         "expense.CreateExpenseResponse": {
             "type": "object",
             "properties": {
+                "categoryId": {
+                    "type": "string"
+                },
                 "createdAt": {
                     "type": "string"
                 },
@@ -130,6 +275,9 @@
         "expense.ListExpenseItem": {
             "type": "object",
             "properties": {
+                "categoryId": {
+                    "type": "string"
+                },
                 "createdAt": {
                     "type": "string"
                 },
