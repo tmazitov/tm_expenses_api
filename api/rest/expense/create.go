@@ -14,6 +14,7 @@ import (
 type CreateExpenseRequest struct {
 	Name       string          `json:"name" validate:"required,min=1,max=255"`
 	CategoryId string          `json:"categoryId" validate:"omitempty,uuid"`
+	Date       time.Time       `json:"date" validate:"required"`
 	Price      decimal.Decimal `json:"price" validate:"decimal_min=0.01" swaggertype:"number"`
 }
 
@@ -46,6 +47,7 @@ func (r *Router) Create() fiber.Handler {
 			Name:       req.Name,
 			Price:      req.Price,
 			CategoryId: req.CategoryId,
+			Date:       req.Date,
 		})
 		if err != nil {
 

@@ -12,6 +12,7 @@ import (
 type CreateExpenseForm struct {
 	Name       string
 	CategoryId string
+	Date       time.Time
 	Price      decimal.Decimal
 }
 
@@ -24,11 +25,13 @@ type ExpenseOutput struct {
 }
 
 func (s *Service) Create(ctx context.Context, form CreateExpenseForm) (*ExpenseOutput, error) {
+
 	e, err := expense.NewExpense(expense.ExpenseParams{
 		Id:         uuid.NewString(),
 		Name:       form.Name,
 		CategoryId: form.CategoryId,
 		Price:      form.Price,
+		CreatedAt:  form.Date,
 	})
 	if err != nil {
 		return nil, err

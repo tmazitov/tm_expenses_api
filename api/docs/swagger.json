@@ -236,10 +236,14 @@
         "expense.CreateExpenseRequest": {
             "type": "object",
             "required": [
+                "date",
                 "name"
             ],
             "properties": {
                 "categoryId": {
+                    "type": "string"
+                },
+                "date": {
                     "type": "string"
                 },
                 "name": {
