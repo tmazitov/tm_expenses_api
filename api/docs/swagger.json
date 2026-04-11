@@ -165,6 +165,55 @@
                     }
                 }
             }
+        },
+        "/expense/stats": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "expense"
+                ],
+                "summary": "Get expense stats",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Stat variant (weekly, monthly)",
+                        "name": "variant",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "maximum": 6,
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Number of periods to look back (1–6)",
+                        "name": "units",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Page number (0-based)",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/expense.ExpenseStatsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -273,6 +322,28 @@
                 },
                 "price": {
                     "type": "number"
+                }
+            }
+        },
+        "expense.ExpenseStatItem": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "expense.ExpenseStatsResponse": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/expense.ExpenseStatItem"
+                    }
                 }
             }
         },

@@ -10,6 +10,7 @@ import (
 type ExpenseService interface {
 	Create(ctx context.Context, input app.CreateExpenseForm) (*app.ExpenseOutput, error)
 	List(ctx context.Context, input app.ListExpenseInput) (*app.ListExpenseOutput, error)
+	Stats(ctx context.Context, input app.ExpenseStatsInput) (*app.ExpenseStatsOutput, error)
 }
 
 type Router struct {
@@ -25,5 +26,6 @@ func NewRouter(service ExpenseService) *Router {
 func (r *Router) Register(a *fiber.App) {
 	a.Group("/expense").
 		Post("/", r.Create()).
-		Get("/", r.List())
+		Get("/", r.List()).
+		Get("/stats", r.Stats())
 }
