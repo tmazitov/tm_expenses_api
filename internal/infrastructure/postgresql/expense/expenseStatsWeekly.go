@@ -19,7 +19,7 @@ func (r *Repository) StatsWeekly(ctx context.Context, filters expense.ExpenseSta
 
 	rows := []expenseWeeklyStatRow{}
 
-	now := time.Now()
+	now := time.Now().UTC()
 	currentWeekStart := now.AddDate(0, 0, -int(now.Weekday()-time.Monday+7)%7)
 	pageOffset := int(filters.Page()) * int(filters.Units()) * 7
 	endPeriod := currentWeekStart.AddDate(0, 0, -pageOffset)

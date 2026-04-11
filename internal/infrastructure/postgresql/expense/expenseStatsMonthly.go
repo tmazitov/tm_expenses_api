@@ -18,8 +18,8 @@ func (r *Repository) StatsMonthly(ctx context.Context, filters expense.ExpenseSt
 
 	rows := []expenseMonthlyStatRow{}
 
-	now := time.Now()
-	currentMonthStart := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	now := time.Now().UTC()
+	currentMonthStart := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, time.UTC)
 	pageOffset := int(filters.Page()) * int(filters.Units())
 	endPeriod := currentMonthStart.AddDate(0, -pageOffset, 0)
 	startPeriod := endPeriod.AddDate(0, -int(filters.Units()-1), 0)
