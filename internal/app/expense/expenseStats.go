@@ -42,18 +42,24 @@ func (s *Service) Stats(ctx context.Context, input ExpenseStatsInput) (*ExpenseS
 		Items: []*ExpenseStatsRecord{},
 	}
 
+	var stats []*expense.ExpenseStat
+
 	if filters.Variant() == expense.WeeklyStat {
-		stats, err := s.repo.StatsWeekly(ctx, *filters)
+		stats, err = s.repo.StatsWeekly(ctx, *filters)
 		if err != nil {
 			return nil, err
 		}
-
-		for _, stat := range stats {
-			output.Items = append(output.Items, &ExpenseStatsRecord{
-				Key:   stat.Key(),
-				Value: stat.Value(),
-			})
+	} else if filters.Variant() == expense.MonthlyStat {
+		stats, err = s.repo.StatsMonthly(ctx, *filters)
+		if err != nil {
+			return nil, err
 		}
+	}
+	for _, stat := range stats {
+		output.Items = append(output.Items, &ExpenseStatsRecord{
+			Key:   stat.Key(),
+			Value: stat.Value(),
+		})
 	}
 
 	return &output, nil
