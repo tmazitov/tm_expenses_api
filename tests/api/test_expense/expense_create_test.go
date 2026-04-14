@@ -3,7 +3,6 @@ package test_expense
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -32,6 +31,8 @@ func TestExpenseCreate(t *testing.T) {
 
 	app := utils.SetupAppInstance()
 
+	category := uuid.NewString()
+
 	groups := []*utils.TestGroup[CreateRequest, CreateResponse]{
 
 		utils.NewTestGroup[CreateRequest, CreateResponse]("Invalid Create", 400).
@@ -45,23 +46,30 @@ func TestExpenseCreate(t *testing.T) {
 			Case("No date", CreateRequest{Name: "expense", Price: 1}).
 			Case("Empty date", CreateRequest{Name: "expense", Price: 1, Date: ""}).
 			Case("Wrong format date #1", CreateRequest{Name: "expense", Price: 1, Date: "02/01/2006"}).
-			Case("Wrong format date #2", CreateRequest{Name: "expense", Price: 1, Date: "02.01.2006"}).
+			Case("Wrong format date #2", CreateRequest{Name: "expense", Price: 1, Date: "15-02-2006"}).
 			Case("Too large date", CreateRequest{Name: "expense", Price: 1, Date: utils.TooLargeString(256)}).
 			// Invalid Price
 			Case("No price", CreateRequest{Name: "expense", Date: "02.01.2006"}).
 			Case("Zero price", CreateRequest{Name: "expense", Date: "02.01.2006", Price: 0}).
 			Case("Negative price", CreateRequest{Name: "expense", Date: "02.01.2006", Price: -10}).
 			// Invalid Category
-			Case("Zero price", CreateRequest{Name: "expense", Date: utils.ISODate(2006, 01, 02), Price: 1, CategoryId: "132"}).
-			Case("Zero price", CreateRequest{Name: "expense", Date: utils.ISODate(2006, 01, 02), Price: 1, CategoryId: utils.TooLargeString(256)}),
+			Case("Wrong category #1", CreateRequest{Name: "expense", Date: utils.ISODate(2006, 01, 02), Price: 1, CategoryId: "132"}).
+			Case("Wrong category #2", CreateRequest{Name: "expense", Date: utils.ISODate(2006, 01, 02), Price: 1, CategoryId: utils.TooLargeString(256)}),
 
-		utils.NewTestGroup[CreateRequest, CreateResponse]("Valid Create", 201).
+		utils.NewTestGroup[CreateRequest, CreateResponse]("Valid Create #1", 201).
 			Output(CreateResponse{
 				Name:  "expense",
 				Price: 1,
 			}).
-			Case("Basic", CreateRequest{Name: "expense", Price: 1, Date: utils.ISODate(2006, 01, 02)}).
-			Case("Basic", CreateRequest{Name: "expense", Price: 1, Date: utils.ISODate(2006, 01, 02), CategoryId: uuid.NewString()}),
+			Case("Basic", CreateRequest{Name: "expense", Price: 1, Date: utils.ISODate(2006, 01, 02)}),
+
+		utils.NewTestGroup[CreateRequest, CreateResponse]("Valid Create #2", 201).
+			Output(CreateResponse{
+				Name:       "expense",
+				Price:      1,
+				CategoryId: category,
+			}).
+			Case("With Category", CreateRequest{Name: "expense", Price: 1, Date: utils.ISODate(2006, 01, 02), CategoryId: category}),
 	}
 
 	for _, testGroup := range groups {
@@ -81,14 +89,13 @@ func TestExpenseCreate(t *testing.T) {
 
 					assert.Equal(t, testGroup.Status, resp.StatusCode)
 
-					fmt.Println("status", testGroup.Status)
-
 					if resp.StatusCode == http.StatusCreated {
 						var got CreateResponse
 						json.NewDecoder(resp.Body).Decode(&got)
 
 						assert.Equal(t, testGroup.Expected.Name, got.Name)
 						assert.Equal(t, testGroup.Expected.Price, got.Price)
+						assert.Equal(t, testGroup.Expected.CategoryId, got.CategoryId)
 
 						assert.NotEmpty(t, got.Id)
 						assert.NotEmpty(t, got.CreatedAt)
