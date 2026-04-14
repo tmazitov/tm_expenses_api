@@ -17,4 +17,7 @@ tasks:
     desc: "Generate swagger.json from annotations"
     cmd: swag init -g cmd/main.go --dir ./ -o api/docs --outputTypes json
 
+  test:
+    desc: "Run tests"
+    cmd: gotestsum --format testname ./tests/...
 

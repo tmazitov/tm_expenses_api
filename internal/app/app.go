@@ -12,10 +12,10 @@ type App struct {
 
 func NewApp(db DB) *App {
 	return &App{
-		expenseService: expense.NewService(db.ExpenseRepo()),
+		expenseService:  expense.NewService(db.ExpenseRepo()),
 		categoryService: category.NewService(db.CategoryRepo()),
 	}
 }
 
-func (a *App) ExpenseService() *expense.Service { return a.expenseService }
+func (a *App) ExpenseService() *expense.Service   { return a.expenseService }
 func (a *App) CategoryService() *category.Service { return a.categoryService }

@@ -6,11 +6,14 @@ require (
 	github.com/go-playground/validator/v10 v10.30.2
 	github.com/gofiber/contrib/v3/swaggo v1.0.1
 	github.com/joho/godotenv v1.5.1
+	github.com/shopspring/decimal v1.4.0
+	github.com/stretchr/testify v1.11.1
 	github.com/uptrace/bun/driver/pgdriver v1.2.18
 )
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/go-openapi/jsonpointer v0.22.4 // indirect
 	github.com/go-openapi/jsonreference v0.21.4 // indirect
@@ -26,8 +29,8 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
+	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/sethvargo/go-retry v0.3.0 // indirect
-	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/swaggo/files/v2 v2.0.2 // indirect
 	github.com/swaggo/swag v1.16.6 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
@@ -35,6 +38,7 @@ require (
 	golang.org/x/mod v0.33.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/tools v0.42.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (

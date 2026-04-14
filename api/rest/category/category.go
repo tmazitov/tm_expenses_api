@@ -1,23 +1,16 @@
 package category
 
 import (
-	"context"
-
 	"github.com/gofiber/fiber/v3"
 
-	app "github.com/tmazitov/ayda-order-service.git/internal/app/category"
+	"github.com/tmazitov/ayda-order-service.git/internal/app/category"
 )
 
-type CategoryService interface {
-	Create(ctx context.Context, input app.CategoryCreateForm) (*app.CategoryCreateOutput, error)
-	List(ctx context.Context) ([]app.CategoryListItem, error)
-}
-
 type Router struct {
-	service CategoryService
+	service *category.Service
 }
 
-func NewRouter(service CategoryService) *Router {
+func NewRouter(service *category.Service) *Router {
 	return &Router{
 		service: service,
 	}

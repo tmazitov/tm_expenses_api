@@ -7,25 +7,24 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-type Router struct {
+type Docs struct{}
+
+func NewDocs() *Docs {
+	return &Docs{}
 }
 
-func NewRouter() *Router {
-	return &Router{}
-}
-
-func (r *Router) Register(a *fiber.App) {
+func (r *Docs) Register(a *fiber.App) {
 	a.Get("/docs/swagger.json", r.Spec())
 	a.Get("/docs/*", r.Entrypoint())
 }
 
-func (r *Router) Spec() fiber.Handler {
+func (r *Docs) Spec() fiber.Handler {
 	return func(ctx fiber.Ctx) error {
 		return ctx.SendFile("./api/docs/swagger.json")
 	}
 }
 
-func (r *Router) Entrypoint() fiber.Handler {
+func (r *Docs) Entrypoint() fiber.Handler {
 	return swaggo.New(swaggo.Config{
 		Title:              "Swagger UI",
 		Layout:             "StandaloneLayout",
