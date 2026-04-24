@@ -10,7 +10,11 @@ import (
 	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
 	"github.com/tmazitov/ayda-order-service.git/config"
 	"github.com/tmazitov/ayda-order-service.git/internal/app"
+	infra "github.com/tmazitov/ayda-order-service.git/internal/infrastructure"
+	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/google"
+	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/jwt"
 	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql"
+	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/redis"
 	"github.com/tmazitov/ayda-order-service.git/pkg/validator"
 )
 
@@ -23,13 +27,41 @@ func main() {
 		log.Fatalf("service launch failed: %v", err)
 	}
 
-	db, err := postgresql.NewDatabase("./db/migrations", c.DB)
+	infra, err := infra.NewInfrastructure(infra.InfrastructureParams{
+		DBConfig: postgresql.Config{
+			Host:     c.DB.Host,
+			Port:     c.DB.Port,
+			User:     c.DB.User,
+			Password: c.DB.Password,
+			SSLMode:  c.DB.SSLMode,
+			DBName:   c.DB.DBName,
+		},
+		CacheParams: redis.CacheParams{
+			Addr: c.Cache.Addr,
+			DB:   c.Cache.DB,
+		},
+		GoogleOAuthParams: google.OAuthProviderParams{
+			ClientId: c.GoogleOAuth.ClientId,
+		},
+		JwtParams: jwt.StorageParams{
+			Secret:     c.JWT.Secret,
+			AccessTTL:  c.JWT.AccessTTL,
+			RefreshTTL: c.JWT.RefreshTTL,
+		},
+	})
 	if err != nil {
 		log.Fatalf("service launch failed: %v", err)
 	}
-	defer db.Close()
 
-	application := app.NewApp(db)
+	application, err := app.NewApp(app.Infrastructure{
+		DB:          infra.DB(),
+		Cache:       infra.Cache(),
+		GoogleOAuth: infra.GoogleOAuth(),
+		Jwt:         infra.Jwt(),
+	})
+	if err != nil {
+		log.Fatalf("service launch failed: %v", err)
+	}
 
 	fiberApp := fiber.New(fiber.Config{
 		StructValidator: validator.New(),

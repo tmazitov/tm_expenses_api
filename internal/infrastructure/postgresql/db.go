@@ -8,8 +8,10 @@ import (
 
 	categoryDomain "github.com/tmazitov/ayda-order-service.git/internal/domain/category"
 	expenseDomain "github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
+	userDomain "github.com/tmazitov/ayda-order-service.git/internal/domain/user"
 	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql/category"
 	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql/expense"
+	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql/user"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
@@ -32,6 +34,7 @@ func (c Config) DSN() string {
 type Database struct {
 	expenseRepository  *expense.Repository
 	categoryRepository *category.Repository
+	userRepository     *user.Repository
 	instance           *bun.DB
 }
 
@@ -50,6 +53,7 @@ func NewDatabase(migrationsDir string, config Config) (*Database, error) {
 		instance:           instance,
 		expenseRepository:  expense.NewRepository(instance),
 		categoryRepository: category.NewRepository(instance),
+		userRepository:     user.NewRepository(instance),
 	}
 
 	if err := db.syncMigrations(migrationsDir); err != nil {
@@ -65,3 +69,4 @@ func (db *Database) Close() error {
 
 func (db *Database) ExpenseRepo() expenseDomain.Repository   { return db.expenseRepository }
 func (db *Database) CategoryRepo() categoryDomain.Repository { return db.categoryRepository }
+func (db *Database) UserRepo() userDomain.Repository         { return db.userRepository }
