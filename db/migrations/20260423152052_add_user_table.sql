@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS users (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) DEFAULT NULL,
@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS "user" (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS users;
 -- +goose StatementEnd

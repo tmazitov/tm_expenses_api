@@ -1,5 +1,7 @@
 version: '3'
 
+dotenv: ['.env']
+
 tasks:
   dev:
     desc: "Run service in dev mode."
@@ -10,8 +12,16 @@ tasks:
     cmd: cd scripts && bash ./init_database.sh
 
   migrate:
-    desc: "Create a new migration file using goose"
+    desc: "🪿 Create a new migration file using goose"
     cmd: cd scripts && bash ./goose_add_migration.sh
+
+  migrate_up:
+    desc: "🪿 Apply all pending migrations"
+    cmd: goose -dir db/migrations postgres "host=$DB_HOST port=$DB_PORT user=$DB_USER password=$DB_PASSWORD dbname=$DB_NAME sslmode=$DB_SSL_MODE" up
+
+  migrate_down:
+    desc: "🪿 Rollback the last migration"
+    cmd: goose -dir db/migrations postgres "host=$DB_HOST port=$DB_PORT user=$DB_USER password=$DB_PASSWORD dbname=$DB_NAME sslmode=$DB_SSL_MODE" down
 
   docs:
     desc: "Generate swagger.json from annotations"
