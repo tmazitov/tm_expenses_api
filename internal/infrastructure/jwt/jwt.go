@@ -117,6 +117,7 @@ func (s *Storage) VerifyAccess(token string) (map[string]any, error) {
 func (s *Storage) VerifyRefresh(ctx context.Context, token string) (map[string]any, error) {
 	claims, err := s.verifyToken(token)
 	if err != nil {
+		fmt.Println("not verified")
 		return nil, err
 	}
 
@@ -129,6 +130,7 @@ func (s *Storage) VerifyRefresh(ctx context.Context, token string) (map[string]a
 	}
 
 	if storedToken != token {
+		fmt.Println("not the same")
 		return nil, ErrInvalidToken
 	}
 

@@ -70,7 +70,7 @@ func main() {
 	fiberApp.Use(cors.New(c.CORS))
 
 	docs.NewDocs().Register(fiberApp)
-	rest.NewRestAPI(*application).Register(fiberApp)
+	rest.NewRestAPI(*application).Register(fiberApp, application.UserService())
 
 	log.Fatal(fiberApp.Listen(":8080"))
 }

@@ -11,12 +11,7 @@ type UserGoogleCredentials struct {
 	IdToken string
 }
 
-type UserCreateOutput struct {
-	Access  string
-	Refresh string
-}
-
-func (s *Service) AuthWithGoogle(ctx context.Context, credentials UserGoogleCredentials) (*UserCreateOutput, error) {
+func (s *Service) AuthWithGoogle(ctx context.Context, credentials UserGoogleCredentials) (*JwtTokenPair, error) {
 
 	claims, err := s.googleOauthProvider.ValidateToken(ctx, credentials.IdToken)
 	if err != nil {
@@ -61,7 +56,7 @@ func (s *Service) AuthWithGoogle(ctx context.Context, credentials UserGoogleCred
 		return nil, err
 	}
 
-	return &UserCreateOutput{
+	return &JwtTokenPair{
 		Access:  access,
 		Refresh: refresh,
 	}, nil

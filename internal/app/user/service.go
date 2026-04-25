@@ -52,8 +52,3 @@ func NewService(params ServiceParams) (*Service, error) {
 		jwt:                 params.Jwt,
 	}, nil
 }
-
-type JwtTokenPair struct {
-	Access  string
-	Refresh string
-}

@@ -8,3 +8,8 @@ type JwtProvider interface {
 	VerifyAccess(token string) (map[string]any, error)
 	VerifyRefresh(ctx context.Context, token string) (map[string]any, error)
 }
+
+type JwtTokenPair struct {
+	Access  string
+	Refresh string
+}

@@ -18,5 +18,6 @@ func NewRouter(service *user.Service) *Router {
 
 func (r *Router) Register(a *fiber.App) {
 	a.Group("/auth").
-		Post("/google", r.GoogleOAuth())
+		Post("/google", r.GoogleOAuth()).
+		Post("/refresh", r.Refresh())
 }

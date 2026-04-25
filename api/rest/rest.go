@@ -4,8 +4,10 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/category"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/expense"
+	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
 	"github.com/tmazitov/ayda-order-service.git/api/rest/user"
 	"github.com/tmazitov/ayda-order-service.git/internal/app"
+	userApp "github.com/tmazitov/ayda-order-service.git/internal/app/user"
 )
 
 type RestAPI struct {
@@ -22,8 +24,15 @@ func NewRestAPI(a app.App) *RestAPI {
 	}
 }
 
-func (api *RestAPI) Register(app *fiber.App) {
+func (api *RestAPI) Register(app *fiber.App, service *userApp.Service) {
+
+	authMiddleware := middleware.AuthMiddleware(service)
+
 	api.userRouter.Register(app)
-	api.categoryRouter.Register(app)
-	api.expenseRouter.Register(app)
+	api.categoryRouter.Register(app).
+		Use(authMiddleware).
+		Routes()
+	api.expenseRouter.Register(app).
+		Use(authMiddleware).
+		Routes()
 }
