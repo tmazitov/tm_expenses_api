@@ -35,7 +35,8 @@ func (r *Router) Routes() *Router {
 		Post("/refresh", r.Refresh())
 
 	r.userGroup.
-		Get("", r.Profile())
+		Get("", r.Profile()).
+		Post("/logout", r.Logout())
 
 	return r
 }

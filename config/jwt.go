@@ -34,6 +34,6 @@ func NewJWT() (*JWT, error) {
 	return &JWT{
 		Secret:     []byte(secret),
 		AccessTTL:  time.Minute * time.Duration(accessTTL),
-		RefreshTTL: time.Minute * time.Duration(refreshTTL),
+		RefreshTTL: time.Hour * 24 * time.Duration(refreshTTL),
 	}, nil
 }

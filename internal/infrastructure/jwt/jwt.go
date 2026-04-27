@@ -137,6 +137,22 @@ func (s *Storage) VerifyRefresh(ctx context.Context, token string) (map[string]a
 	return claims, nil
 }
 
+func (s *Storage) Dispose(ctx context.Context, refreshToken string) error {
+
+	claims, err := s.VerifyRefresh(ctx, refreshToken)
+	if err != nil {
+		return err
+	}
+
+	jti := claims["jti"]
+	key := fmt.Sprintf("refresh:%s", jti)
+	if err := s.cache.Del(ctx, key); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *Storage) verifyToken(token string) (jwt.MapClaims, error) {
 	claims := &jwt.MapClaims{}
 

@@ -7,6 +7,7 @@ type JwtProvider interface {
 	Refresh(ctx context.Context, token string) (string, string, error)
 	VerifyAccess(token string) (map[string]any, error)
 	VerifyRefresh(ctx context.Context, token string) (map[string]any, error)
+	Dispose(ctx context.Context, refreshToken string) error
 }
 
 type JwtTokenPair struct {
