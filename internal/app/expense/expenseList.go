@@ -9,6 +9,7 @@ import (
 )
 
 type ListExpenseInput struct {
+	UserId     int
 	Name       string
 	CategoryId string
 	Page       int
@@ -45,6 +46,7 @@ func (s *Service) List(ctx context.Context, input ListExpenseInput) (*ListExpens
 		Date:       input.Date,
 		Page:       input.Page,
 		Limit:      input.Limit,
+		UserId:     input.UserId,
 		CategoryId: input.CategoryId,
 	})
 	if err != nil {

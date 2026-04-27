@@ -12,10 +12,10 @@ import (
 
 type ListExpenseQuery struct {
 	// Date *time.Time `query:"date"`
-	Name     string `query:"name"`
-	Page     int    `query:"page" validate:"min=0"`
-	Limit    int    `query:"limit" validate:"min=0,max=100"`
-	Date     string `query:"date" validate:"required,date=02.01.2006"`
+	Name       string `query:"name"`
+	Page       int    `query:"page" validate:"min=0"`
+	Limit      int    `query:"limit" validate:"min=0,max=100"`
+	Date       string `query:"date" validate:"required,date=02.01.2006"`
 	CategoryId string `query:"category" validate:"omitempty,uuid"`
 }
 
@@ -56,6 +56,7 @@ func (r *Router) List() fiber.Handler {
 		}
 
 		list, err := r.service.List(ctx, expense.ListExpenseInput{
+			UserId:     ctx.Locals("userId").(int),
 			Name:       filters.Name,
 			Limit:      filters.Limit,
 			Page:       filters.Page,

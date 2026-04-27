@@ -10,6 +10,7 @@ type ExpenseStatsInput struct {
 	Variant string
 	Units   int8
 	Page    int
+	UserId  int
 }
 type ExpenseStatsOutput struct {
 	Items []*ExpenseStatsRecord
@@ -27,13 +28,12 @@ func (s *Service) Stats(ctx context.Context, input ExpenseStatsInput) (*ExpenseS
 		return nil, err
 	}
 
-	params := expense.ExpenseStatFiltersParams{
+	filters, err := expense.NewExpenseStatFilters(expense.ExpenseStatFiltersParams{
 		Variant: variant,
 		Units:   uint8(input.Units),
 		Page:    input.Page,
-	}
-
-	filters, err := expense.NewExpenseStatFilters(params)
+		UserId:  input.UserId,
+	})
 	if err != nil {
 		return nil, err
 	}

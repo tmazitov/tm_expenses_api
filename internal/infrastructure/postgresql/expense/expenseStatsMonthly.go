@@ -25,6 +25,7 @@ func (r *Repository) StatsMonthly(ctx context.Context, filters expense.ExpenseSt
 	startPeriod := endPeriod.AddDate(0, -int(filters.Units()-1), 0)
 
 	err := r.db.NewSelect().
+		Where("user_id=?", filters.UserId()).
 		TableExpr(`
 			generate_series(
 				DATE_TRUNC('month', ?::date),
@@ -34,7 +35,7 @@ func (r *Repository) StatsMonthly(ctx context.Context, filters expense.ExpenseSt
 		`, startPeriod, endPeriod).
 		ColumnExpr("EXTRACT(MONTH FROM month_start)::int AS month_number").
 		ColumnExpr("COALESCE(SUM(e.price), 0) AS total").
-		Join("LEFT JOIN expense e ON DATE_TRUNC('month', e.created_at) = month_start").
+		Join("LEFT JOIN expense e ON DATE_TRUNC('month', e.created_at) = month_start AND e.user_id = ?", filters.UserId()).
 		GroupExpr("month_start").
 		OrderExpr("month_start ASC").
 		Scan(ctx, &rows)

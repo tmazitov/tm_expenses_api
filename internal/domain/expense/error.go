@@ -25,6 +25,7 @@ var (
 
 	ErrEmptyName   = NewExpenseError("EMPTY_NAME", "expense: name cannot be empty")
 	ErrNameTooLong = NewExpenseError("NAME_TOO_LONG", "expense: name cannot exceed 255 characters")
+	ErrUserIdZero  = NewExpenseError("USER_ID_ZERO", "expense: user id can't be zero")
 
 	ErrPageIsNegative  = NewExpenseError("NEG_PAGE", "expense filters: page cannot be negative")
 	ErrLimitIsNegative = NewExpenseError("NEG_LIMIT", "expense filters: limit cannot be negative")

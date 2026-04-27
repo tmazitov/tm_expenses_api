@@ -8,6 +8,7 @@ import (
 
 type Expense struct {
 	id         string
+	userId     int
 	name       string
 	categoryId string
 	price      decimal.Decimal
@@ -16,6 +17,7 @@ type Expense struct {
 
 type ExpenseParams struct {
 	Id         string
+	UserId     int
 	Name       string
 	CategoryId string
 	Price      decimal.Decimal
@@ -36,6 +38,10 @@ func (p ExpenseParams) validate() error {
 		return ErrNameTooLong
 	}
 
+	if p.UserId == 0 {
+		return ErrUserIdZero
+	}
+
 	return nil
 }
 
@@ -49,6 +55,7 @@ func NewExpense(params ExpenseParams) (*Expense, error) {
 	return &Expense{
 		id:         params.Id,
 		name:       params.Name,
+		userId:     params.UserId,
 		price:      params.Price,
 		categoryId: params.CategoryId,
 		createdAt:  params.CreatedAt,
@@ -59,4 +66,5 @@ func (e Expense) Id() string             { return e.id }
 func (e Expense) Name() string           { return e.name }
 func (e Expense) CategoryId() string     { return e.categoryId }
 func (e Expense) Price() decimal.Decimal { return e.price }
+func (e Expense) UserId() int            { return e.userId }
 func (e Expense) CreatedAt() time.Time   { return e.createdAt }

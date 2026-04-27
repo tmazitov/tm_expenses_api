@@ -42,6 +42,7 @@ func (r *Router) Stats() fiber.Handler {
 		}
 
 		stats, err := r.service.Stats(ctx, expense.ExpenseStatsInput{
+			UserId:  ctx.Locals("userId").(int),
 			Variant: filters.Variant,
 			Units:   filters.Units,
 			Page:    filters.Page,

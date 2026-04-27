@@ -45,6 +45,7 @@ func (r *Router) Create() fiber.Handler {
 
 		output, err := r.service.Create(ctx, expense.CreateExpenseForm{
 			Name:       req.Name,
+			UserId:     ctx.Locals("userId").(int),
 			Price:      req.Price,
 			CategoryId: req.CategoryId,
 			Date:       req.Date,

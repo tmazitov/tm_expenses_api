@@ -13,6 +13,7 @@ func (r *Repository) List(ctx context.Context, filters expense.ListFilters) ([]*
 	q := r.db.NewSelect().
 		Model(&models).
 		Where("created_at::date = ?", filters.Date()).
+		Where("user_id=?", filters.UserId()).
 		Limit(filters.Limit()).Offset(filters.Page() * filters.Limit())
 
 	if len(filters.Name()) != 0 {
@@ -29,13 +30,7 @@ func (r *Repository) List(ctx context.Context, filters expense.ListFilters) ([]*
 
 	result := make([]*expense.Expense, 0, len(models))
 	for _, m := range models {
-		e, err := expense.NewExpense(expense.ExpenseParams{
-			Id:         m.Id,
-			Name:       m.Name,
-			Price:      m.Price,
-			CreatedAt:  m.CreatedAt,
-			CategoryId: m.CategoryId,
-		})
+		e, err := expense.NewExpense(m.toExpenseParams())
 		if err != nil {
 			return nil, err
 		}

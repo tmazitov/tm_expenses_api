@@ -3,7 +3,6 @@ package expense
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -20,10 +19,14 @@ func (r *Repository) StatsWeekly(ctx context.Context, filters expense.ExpenseSta
 	rows := []expenseWeeklyStatRow{}
 
 	now := time.Now().UTC()
-	currentWeekStart := now.AddDate(0, 0, -int(now.Weekday()-time.Monday+7)%7)
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	currentWeekStart := today.AddDate(0, 0, -int(today.Weekday()-time.Monday+7)%7)
 	pageOffset := int(filters.Page()) * int(filters.Units()) * 7
 	endPeriod := currentWeekStart.AddDate(0, 0, -pageOffset)
 	startPeriod := endPeriod.AddDate(0, 0, -int(filters.Units()-1)*7)
+	if endPeriod.Equal(today) {
+		endPeriod = endPeriod.AddDate(0, 0, 1)
+	}
 
 	err := r.db.NewSelect().
 		TableExpr(`
@@ -35,7 +38,7 @@ func (r *Repository) StatsWeekly(ctx context.Context, filters expense.ExpenseSta
 		`, startPeriod, endPeriod).
 		ColumnExpr("EXTRACT(WEEK FROM week_start)::int AS week_number").
 		ColumnExpr("COALESCE(SUM(e.price), 0) AS total").
-		Join("LEFT JOIN expense e ON DATE_TRUNC('week', e.created_at) = week_start").
+		Join("LEFT JOIN expense e ON DATE_TRUNC('week', e.created_at) = week_start AND e.user_id = ?", filters.UserId()).
 		GroupExpr("week_start").
 		OrderExpr("week_start ASC").
 		Scan(ctx, &rows)
@@ -43,8 +46,6 @@ func (r *Repository) StatsWeekly(ctx context.Context, filters expense.ExpenseSta
 	if err != nil {
 		return nil, errors.Join(ErrSelectionFailed, err)
 	}
-	fmt.Printf("units: %d\n", filters.Units())
-	fmt.Printf("start: %s\nend: %s\nrecords: %+v\n", startPeriod, endPeriod, rows)
 
 	result := make([]*expense.ExpenseStat, 0, len(rows))
 	for _, row := range rows {
