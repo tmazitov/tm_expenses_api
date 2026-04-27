@@ -11,6 +11,14 @@ type RefreshResponse struct {
 	Refresh string `json:"refresh"`
 }
 
+// @Summary  Refresh access token
+// @Tags     auth
+// @Accept   json
+// @Produce  json
+// @Param    body body     RefreshRequest  true  "Refresh token"
+// @Success  200  {object} RefreshResponse
+// @Failure  401
+// @Router   /auth/refresh [post]
 func (r *Router) Refresh() fiber.Handler {
 	return func(ctx fiber.Ctx) error {
 

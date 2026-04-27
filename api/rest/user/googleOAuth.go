@@ -17,6 +17,15 @@ type GoogleOAuthResponse struct {
 	Refresh string `json:"refresh"`
 }
 
+// @Summary  Authenticate with Google OAuth
+// @Tags     auth
+// @Accept   json
+// @Produce  json
+// @Param    body body     GoogleOAuthRequest  true  "Google ID token"
+// @Success  200  {object} GoogleOAuthResponse
+// @Failure  400
+// @Failure  500
+// @Router   /auth/google [post]
 func (r *Router) GoogleOAuth() fiber.Handler {
 	return func(ctx fiber.Ctx) error {
 		var req GoogleOAuthRequest
