@@ -1,11 +1,13 @@
 package expense
 
+import "github.com/shopspring/decimal"
+
 type ExpenseStat struct {
 	key   ExpenseStatIdentifier
-	value int
+	value decimal.Decimal
 }
 
-func NewExpenseStat(key uint8, value int, variant expenseStatVariant) (*ExpenseStat, error) {
+func NewExpenseStat(key uint8, value decimal.Decimal, variant expenseStatVariant) (*ExpenseStat, error) {
 
 	k, err := NewExpenseStatIdentifier(key, variant)
 	if err != nil {
@@ -18,5 +20,5 @@ func NewExpenseStat(key uint8, value int, variant expenseStatVariant) (*ExpenseS
 	}, nil
 }
 
-func (s *ExpenseStat) Key() uint8 { return uint8(s.key) }
-func (s *ExpenseStat) Value() int { return s.value }
+func (s *ExpenseStat) Key() uint8             { return uint8(s.key) }
+func (s *ExpenseStat) Value() decimal.Decimal { return s.value }

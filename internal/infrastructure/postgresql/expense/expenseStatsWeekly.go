@@ -49,7 +49,7 @@ func (r *Repository) StatsWeekly(ctx context.Context, filters expense.ExpenseSta
 
 	result := make([]*expense.ExpenseStat, 0, len(rows))
 	for _, row := range rows {
-		stat, err := expense.NewExpenseStat(row.WeekNumber, int(row.Total.IntPart()), expense.WeeklyStat)
+		stat, err := expense.NewExpenseStat(row.WeekNumber, row.Total, expense.WeeklyStat)
 		if err != nil {
 			return nil, errors.Join(ErrSelectionFailed, err)
 		}

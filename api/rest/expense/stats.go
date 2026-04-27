@@ -16,8 +16,8 @@ type ExpenseStatsQuery struct {
 }
 
 type ExpenseStatItem struct {
-	Key   uint8 `json:"key"`
-	Value int   `json:"value"`
+	Key   uint8   `json:"key"`
+	Value float64 `json:"value"`
 }
 
 type ExpenseStatsResponse struct {

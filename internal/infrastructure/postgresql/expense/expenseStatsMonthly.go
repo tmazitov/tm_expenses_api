@@ -25,7 +25,6 @@ func (r *Repository) StatsMonthly(ctx context.Context, filters expense.ExpenseSt
 	startPeriod := endPeriod.AddDate(0, -int(filters.Units()-1), 0)
 
 	err := r.db.NewSelect().
-		Where("user_id=?", filters.UserId()).
 		TableExpr(`
 			generate_series(
 				DATE_TRUNC('month', ?::date),
@@ -46,7 +45,7 @@ func (r *Repository) StatsMonthly(ctx context.Context, filters expense.ExpenseSt
 
 	result := make([]*expense.ExpenseStat, 0, len(rows))
 	for _, row := range rows {
-		stat, err := expense.NewExpenseStat(row.MonthNumber, int(row.Total.IntPart()), expense.MonthlyStat)
+		stat, err := expense.NewExpenseStat(row.MonthNumber, row.Total, expense.MonthlyStat)
 		if err != nil {
 			return nil, errors.Join(ErrSelectionFailed, err)
 		}

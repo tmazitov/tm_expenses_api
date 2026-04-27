@@ -18,7 +18,7 @@ type ExpenseStatsOutput struct {
 
 type ExpenseStatsRecord struct {
 	Key   uint8
-	Value int
+	Value float64
 }
 
 func (s *Service) Stats(ctx context.Context, input ExpenseStatsInput) (*ExpenseStatsOutput, error) {
@@ -58,7 +58,7 @@ func (s *Service) Stats(ctx context.Context, input ExpenseStatsInput) (*ExpenseS
 	for _, stat := range stats {
 		output.Items = append(output.Items, &ExpenseStatsRecord{
 			Key:   stat.Key(),
-			Value: stat.Value(),
+			Value: stat.Value().InexactFloat64(),
 		})
 	}
 
