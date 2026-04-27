@@ -27,11 +27,16 @@ func NewRestAPI(a app.App) *RestAPI {
 }
 
 func (api *RestAPI) Register(app *fiber.App) {
-	api.userRouter.Register(app)
+
 	api.categoryRouter.Register(app).
 		Use(api.authMiddleware).
 		Routes()
+
 	api.expenseRouter.Register(app).
+		Use(api.authMiddleware).
+		Routes()
+
+	api.userRouter.Register(app).
 		Use(api.authMiddleware).
 		Routes()
 }

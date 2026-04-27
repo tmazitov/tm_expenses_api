@@ -9,7 +9,7 @@ import (
 
 func (r *Repository) Create(ctx context.Context, u *user.User) (*user.User, error) {
 
-	model := newUserModel(u)
+	model := NewUserModel(u)
 
 	_, err := r.db.NewInsert().
 		Model(model).

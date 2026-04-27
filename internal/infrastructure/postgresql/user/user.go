@@ -19,7 +19,7 @@ type UserModel struct {
 	CreatedAt  *time.Time      `bun:"created_at,default:now()"`
 }
 
-func newUserModel(u *user.User) *UserModel {
+func NewUserModel(u *user.User) *UserModel {
 
 	model := UserModel{
 		Id:         u.Id(),

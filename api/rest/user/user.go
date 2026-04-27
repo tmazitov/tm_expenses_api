@@ -7,7 +7,9 @@ import (
 )
 
 type Router struct {
-	service *user.Service
+	service   *user.Service
+	authGroup fiber.Router
+	userGroup fiber.Router
 }
 
 func NewRouter(service *user.Service) *Router {
@@ -16,8 +18,24 @@ func NewRouter(service *user.Service) *Router {
 	}
 }
 
-func (r *Router) Register(a *fiber.App) {
-	a.Group("/auth").
+func (r *Router) Register(a *fiber.App) *Router {
+	r.authGroup = a.Group("/auth")
+	r.userGroup = a.Group("/user")
+	return r
+}
+
+func (r *Router) Use(middleware fiber.Handler) *Router {
+	r.userGroup.Use(middleware)
+	return r
+}
+
+func (r *Router) Routes() *Router {
+	r.authGroup.
 		Post("/google", r.GoogleOAuth()).
 		Post("/refresh", r.Refresh())
+
+	r.userGroup.
+		Get("", r.Profile())
+
+	return r
 }
