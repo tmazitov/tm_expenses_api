@@ -15,7 +15,7 @@ func NewUserError(code, message string) *UserError {
 }
 
 func (e *UserError) Error() string {
-	return fmt.Sprintf("expense domain error [%s] : %s", e.code, e.message)
+	return fmt.Sprintf("user domain error [%s] : %s", e.code, e.message)
 }
 
 var (

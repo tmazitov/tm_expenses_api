@@ -1,4 +1,4 @@
-module github.com/tmazitov/ayda-order-service.git
+module github.com/tmazitov/tm_expenses_api
 
 go 1.25.0
 

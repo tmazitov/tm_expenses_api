@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/expense"
 )
 
 func (r *Repository) Create(ctx context.Context, e *expense.Expense) error {

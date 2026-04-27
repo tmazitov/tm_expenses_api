@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v3"
-	"github.com/tmazitov/ayda-order-service.git/internal/app/expense"
-	expenseDomain "github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
+	"github.com/tmazitov/tm_expenses_api/internal/app/expense"
+	expenseDomain "github.com/tmazitov/tm_expenses_api/internal/domain/expense"
 )
 
 type ListExpenseQuery struct {

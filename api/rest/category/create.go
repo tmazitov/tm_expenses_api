@@ -5,8 +5,8 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v3"
-	"github.com/tmazitov/ayda-order-service.git/internal/app/category"
-	domain "github.com/tmazitov/ayda-order-service.git/internal/domain/category"
+	"github.com/tmazitov/tm_expenses_api/internal/app/category"
+	domain "github.com/tmazitov/tm_expenses_api/internal/domain/category"
 )
 
 type CreateCategoryRequest struct {

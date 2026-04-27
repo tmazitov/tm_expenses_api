@@ -1,6 +1,6 @@
 package category
 
-import "github.com/tmazitov/ayda-order-service.git/internal/domain/category"
+import "github.com/tmazitov/tm_expenses_api/internal/domain/category"
 
 type Service struct {
 	repository category.Repository

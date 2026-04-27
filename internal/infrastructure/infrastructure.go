@@ -3,10 +3,10 @@ package infra
 import (
 	"fmt"
 
-	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/google"
-	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/jwt"
-	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql"
-	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/redis"
+	"github.com/tmazitov/tm_expenses_api/internal/infrastructure/google"
+	"github.com/tmazitov/tm_expenses_api/internal/infrastructure/jwt"
+	"github.com/tmazitov/tm_expenses_api/internal/infrastructure/postgresql"
+	"github.com/tmazitov/tm_expenses_api/internal/infrastructure/redis"
 )
 
 type Infrastructure struct {

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/user"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/user"
 )
 
 func (r *Repository) GetBySub(ctx context.Context, method user.AuthMethod, sub string) (*user.User, error) {

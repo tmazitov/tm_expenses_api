@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/gofiber/fiber/v3"
-	"github.com/tmazitov/ayda-order-service.git/internal/app/user"
-	userDomain "github.com/tmazitov/ayda-order-service.git/internal/domain/user"
+	"github.com/tmazitov/tm_expenses_api/internal/app/user"
+	userDomain "github.com/tmazitov/tm_expenses_api/internal/domain/user"
 )
 
 type GoogleOAuthRequest struct {

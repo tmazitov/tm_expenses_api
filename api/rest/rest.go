@@ -2,18 +2,19 @@ package rest
 
 import (
 	"github.com/gofiber/fiber/v3"
-	"github.com/tmazitov/ayda-order-service.git/api/rest/category"
-	"github.com/tmazitov/ayda-order-service.git/api/rest/expense"
-	"github.com/tmazitov/ayda-order-service.git/api/rest/middleware"
-	"github.com/tmazitov/ayda-order-service.git/api/rest/user"
-	"github.com/tmazitov/ayda-order-service.git/internal/app"
-	userApp "github.com/tmazitov/ayda-order-service.git/internal/app/user"
+	"github.com/tmazitov/tm_expenses_api/api/rest/category"
+	"github.com/tmazitov/tm_expenses_api/api/rest/expense"
+	"github.com/tmazitov/tm_expenses_api/api/rest/middleware"
+	"github.com/tmazitov/tm_expenses_api/api/rest/user"
+	"github.com/tmazitov/tm_expenses_api/internal/app"
 )
 
 type RestAPI struct {
 	categoryRouter *category.Router
 	expenseRouter  *expense.Router
 	userRouter     *user.Router
+
+	authMiddleware fiber.Handler
 }
 
 func NewRestAPI(a app.App) *RestAPI {
@@ -21,18 +22,16 @@ func NewRestAPI(a app.App) *RestAPI {
 		categoryRouter: category.NewRouter(a.CategoryService()),
 		expenseRouter:  expense.NewRouter(a.ExpenseService()),
 		userRouter:     user.NewRouter(a.UserService()),
+		authMiddleware: middleware.AuthMiddleware(a.UserService()),
 	}
 }
 
-func (api *RestAPI) Register(app *fiber.App, service *userApp.Service) {
-
-	authMiddleware := middleware.AuthMiddleware(service)
-
+func (api *RestAPI) Register(app *fiber.App) {
 	api.userRouter.Register(app)
 	api.categoryRouter.Register(app).
-		Use(authMiddleware).
+		Use(api.authMiddleware).
 		Routes()
 	api.expenseRouter.Register(app).
-		Use(authMiddleware).
+		Use(api.authMiddleware).
 		Routes()
 }

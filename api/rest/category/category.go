@@ -3,7 +3,7 @@ package category
 import (
 	"github.com/gofiber/fiber/v3"
 
-	"github.com/tmazitov/ayda-order-service.git/internal/app/category"
+	"github.com/tmazitov/tm_expenses_api/internal/app/category"
 )
 
 type Router struct {

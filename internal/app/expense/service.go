@@ -1,6 +1,6 @@
 package expense
 
-import "github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
+import "github.com/tmazitov/tm_expenses_api/internal/domain/expense"
 
 type Service struct {
 	repo expense.Repository

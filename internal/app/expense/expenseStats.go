@@ -3,7 +3,7 @@ package expense
 import (
 	"context"
 
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/expense"
 )
 
 type ExpenseStatsInput struct {

@@ -3,7 +3,7 @@ package user
 import (
 	"github.com/gofiber/fiber/v3"
 
-	"github.com/tmazitov/ayda-order-service.git/internal/app/user"
+	"github.com/tmazitov/tm_expenses_api/internal/app/user"
 )
 
 type Router struct {

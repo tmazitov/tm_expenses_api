@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/category"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/category"
 )
 
 type CategoryCreateForm struct {

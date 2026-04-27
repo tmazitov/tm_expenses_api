@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"github.com/tmazitov/ayda-order-service.git/tests/api/utils"
+	"github.com/tmazitov/tm_expenses_api/tests/api/utils"
 )
 
 type ListFilters struct {

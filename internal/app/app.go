@@ -3,9 +3,9 @@ package app
 import (
 	"errors"
 
-	"github.com/tmazitov/ayda-order-service.git/internal/app/category"
-	"github.com/tmazitov/ayda-order-service.git/internal/app/expense"
-	"github.com/tmazitov/ayda-order-service.git/internal/app/user"
+	"github.com/tmazitov/tm_expenses_api/internal/app/category"
+	"github.com/tmazitov/tm_expenses_api/internal/app/expense"
+	"github.com/tmazitov/tm_expenses_api/internal/app/user"
 )
 
 type App struct {

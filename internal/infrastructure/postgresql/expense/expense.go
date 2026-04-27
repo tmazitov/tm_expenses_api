@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/shopspring/decimal"
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
-	"github.com/tmazitov/ayda-order-service.git/internal/infrastructure/postgresql/category"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/expense"
+	"github.com/tmazitov/tm_expenses_api/internal/infrastructure/postgresql/category"
 	"github.com/uptrace/bun"
 )
 

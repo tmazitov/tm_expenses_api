@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/category"
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/expense"
-	"github.com/tmazitov/ayda-order-service.git/internal/domain/user"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/category"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/expense"
+	"github.com/tmazitov/tm_expenses_api/internal/domain/user"
 )
 
 type DB interface {
