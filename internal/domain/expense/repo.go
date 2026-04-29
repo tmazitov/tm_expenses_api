@@ -1,10 +1,14 @@
 package expense
 
-import "context"
+import (
+	"context"
+)
 
 type Repository interface {
 	Create(ctx context.Context, p *Expense) error
 	List(ctx context.Context, filters ListFilters) ([]*Expense, error)
-	StatsWeekly(ctx context.Context, filters ExpenseStatFilters) ([]*ExpenseStat, error)
-	StatsMonthly(ctx context.Context, filters ExpenseStatFilters) ([]*ExpenseStat, error)
+	WeeklyStats(ctx context.Context, filters ExpenseStatFilters) ([]*ExpenseStat, error)
+	WeeklyCategoryStats(ctx context.Context, filters ExpenseStatFilters) ([]*ExpenseStat, error)
+	MonthlyStats(ctx context.Context, filters ExpenseStatFilters) ([]*ExpenseStat, error)
+	MonthlyCategoryStats(ctx context.Context, filters ExpenseStatFilters) ([]*ExpenseStat, error)
 }

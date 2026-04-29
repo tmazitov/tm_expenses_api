@@ -39,6 +39,12 @@ var (
 	ErrUnknownStatVariant = NewExpenseError("UNKNOWN_STAT", "expense stat: variant is unknown")
 )
 
+// ExpenseStatCategory
+var (
+	ErrInvalidId      = NewExpenseError("INVALID_CATEGORY_ID", "expense stat category: id can't be empty")
+	ErrInvalidPercent = NewExpenseError("INVALID_PERCENT", "expense stat category: percent must be in range from 0 to 100")
+)
+
 // ExpenseStatFilters
 var (
 	ErrUnitsIsNegative = NewExpenseError("NEG_LIMIT", "expense filters: units cannot exceed 6")

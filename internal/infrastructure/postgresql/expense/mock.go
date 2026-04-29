@@ -27,9 +27,15 @@ func (m Mock) List(ctx context.Context, filters expense.ListFilters) ([]*expense
 		instance,
 	}, nil
 }
-func (m Mock) StatsWeekly(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
+func (m Mock) WeeklyCategoryStats(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
 	return []*expense.ExpenseStat{}, nil
 }
-func (m Mock) StatsMonthly(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
+func (m Mock) WeeklyStats(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
+	return []*expense.ExpenseStat{}, nil
+}
+func (m Mock) MonthlyStats(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
+	return []*expense.ExpenseStat{}, nil
+}
+func (m Mock) MonthlyCategoryStats(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
 	return []*expense.ExpenseStat{}, nil
 }

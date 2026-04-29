@@ -22,13 +22,13 @@ func NewJWT() (*JWT, error) {
 	accessTTLRaw := getenvDefault("JWT_ACCESS_TTL", "15")
 	accessTTL, err := strconv.Atoi(accessTTLRaw)
 	if err != nil {
-		return nil, errors.New("jwt config error : access ttl is invalid")
+		return nil, errors.New("jwt config error : access ttl must be number")
 	}
 
 	refreshTTLRaw := getenvDefault("JWT_REFRESH_TTL", "15")
 	refreshTTL, err := strconv.Atoi(refreshTTLRaw)
 	if err != nil {
-		return nil, errors.New("jwt config error : refresh ttl is invalid")
+		return nil, errors.New("jwt config error : refresh ttl must be number")
 	}
 
 	return &JWT{

@@ -16,8 +16,14 @@ type ExpenseStatsQuery struct {
 }
 
 type ExpenseStatItem struct {
-	Key   uint8   `json:"key"`
-	Value float64 `json:"value"`
+	Key        uint8                     `json:"key"`
+	Value      float64                   `json:"value"`
+	Categories []ExpenseStatCategoryItem `json:"categories,omitempty"`
+}
+
+type ExpenseStatCategoryItem struct {
+	Id      string `json:"id"`
+	Percent int    `json:"percent"`
 }
 
 type ExpenseStatsResponse struct {
@@ -61,9 +67,20 @@ func (r *Router) Stats() fiber.Handler {
 		}
 
 		for _, item := range stats.Items {
+
+			categories := make([]ExpenseStatCategoryItem, 0, len(item.Categories))
+
+			for _, itemCategory := range item.Categories {
+				categories = append(categories, ExpenseStatCategoryItem{
+					Id:      itemCategory.Id,
+					Percent: itemCategory.Percent,
+				})
+			}
+
 			response.Items = append(response.Items, &ExpenseStatItem{
-				Key:   uint8(item.Key),
-				Value: item.Value,
+				Key:        uint8(item.Key),
+				Value:      item.Value,
+				Categories: categories,
 			})
 		}
 

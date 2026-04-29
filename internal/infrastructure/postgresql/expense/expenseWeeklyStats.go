@@ -14,7 +14,7 @@ type expenseWeeklyStatRow struct {
 	Total      decimal.Decimal `bun:"total"`
 }
 
-func (r *Repository) StatsWeekly(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
+func (r *Repository) WeeklyStats(ctx context.Context, filters expense.ExpenseStatFilters) ([]*expense.ExpenseStat, error) {
 
 	rows := []expenseWeeklyStatRow{}
 
