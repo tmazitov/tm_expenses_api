@@ -17,18 +17,15 @@ func NewRouter(service *category.Service) *Router {
 	}
 }
 
-func (r *Router) Register(a *fiber.App) *Router {
+func (r *Router) Register(a *fiber.App) {
 	r.group = a.Group("/category")
-	return r
 }
 
-func (r *Router) Use(middleware fiber.Handler) *Router {
+func (r *Router) Use(middleware fiber.Handler) {
 	r.group.Use(middleware)
-	return r
 }
 
-func (r *Router) Routes() *Router {
+func (r *Router) ApplyRoutes() {
 	r.group.Post("/", r.Create())
 	r.group.Get("/", r.List())
-	return r
 }

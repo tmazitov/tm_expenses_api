@@ -15,28 +15,38 @@ type RestAPI struct {
 	userRouter     *user.Router
 
 	authMiddleware fiber.Handler
+
+	mode establishMode
 }
 
-func NewRestAPI(a app.App) *RestAPI {
+func NewRestAPI(a app.App, mode establishMode) *RestAPI {
 	return &RestAPI{
+		mode: mode,
+
 		categoryRouter: category.NewRouter(a.CategoryService()),
 		expenseRouter:  expense.NewRouter(a.ExpenseService()),
 		userRouter:     user.NewRouter(a.UserService()),
-		authMiddleware: middleware.AuthMiddleware(a.UserService()),
+		authMiddleware: middleware.AuthMiddleware(a.UserService(), mode == UnsafeMode),
 	}
+}
+
+type Router interface {
+	Register(a *fiber.App)
+	Use(middleware fiber.Handler)
+	ApplyRoutes()
 }
 
 func (api *RestAPI) Register(app *fiber.App) {
 
-	api.categoryRouter.Register(app).
-		Use(api.authMiddleware).
-		Routes()
+	routers := []Router{
+		api.userRouter,
+		api.expenseRouter,
+		api.categoryRouter,
+	}
 
-	api.expenseRouter.Register(app).
-		Use(api.authMiddleware).
-		Routes()
-
-	api.userRouter.Register(app).
-		Use(api.authMiddleware).
-		Routes()
+	for _, router := range routers {
+		router.Register(app)
+		router.Use(api.authMiddleware)
+		router.ApplyRoutes()
+	}
 }

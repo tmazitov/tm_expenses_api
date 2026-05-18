@@ -18,18 +18,16 @@ func NewRouter(service *user.Service) *Router {
 	}
 }
 
-func (r *Router) Register(a *fiber.App) *Router {
+func (r *Router) Register(a *fiber.App) {
 	r.authGroup = a.Group("/auth")
 	r.userGroup = a.Group("/user")
-	return r
 }
 
-func (r *Router) Use(middleware fiber.Handler) *Router {
+func (r *Router) Use(middleware fiber.Handler) {
 	r.userGroup.Use(middleware)
-	return r
 }
 
-func (r *Router) Routes() *Router {
+func (r *Router) ApplyRoutes() {
 	r.authGroup.
 		Post("/google", r.GoogleOAuth()).
 		Post("/refresh", r.Refresh())
@@ -37,6 +35,4 @@ func (r *Router) Routes() *Router {
 	r.userGroup.
 		Get("", r.Profile()).
 		Post("/logout", r.Logout())
-
-	return r
 }
