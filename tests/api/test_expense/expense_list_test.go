@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/tmazitov/tm_expenses_api/tests/api/utils"
+	"github.com/tmazitov/tm_expenses_api/tests/api/utils/mock"
 )
 
 type ListFilters struct {
@@ -35,7 +36,7 @@ type ListItem struct {
 
 func TestExpenseList(t *testing.T) {
 
-	app := utils.SetupAppInstance()
+	app := mock.NewMockApp()
 
 	groups := []*utils.TestGroup[ListFilters, ListResponse]{
 		utils.NewTestGroup[ListFilters, ListResponse]("Invalid Filters", 400).
