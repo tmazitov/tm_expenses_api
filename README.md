@@ -115,6 +115,31 @@ Swagger UI is available at `http://localhost:8080/swagger/`.
 
 ---
 
+## Deploy
+
+### Build the image
+
+```bash
+docker build -t tm-expenses-api .
+```
+
+### Run the container
+
+The application requires a `.env` file — it is mounted into the container at runtime:
+
+```bash
+docker run -d \
+  --name tm-expenses-api \
+  -p 8080:8080 \
+  -v $(pwd)/.env:/app/.env \
+  tm-expenses-api
+```
+
+> Make sure PostgreSQL and Redis are reachable from within the container.  
+> If they run on the host machine, set `DB_HOST` and `CACHE_ADDR` appropriately in your `.env`.
+
+---
+
 ## API Overview
 
 | Method | Path | Auth | Description |
