@@ -7,8 +7,9 @@ import (
 )
 
 type Cache struct {
-	Addr string
-	DB   int
+	Addr     string
+	DB       int
+	Password string
 }
 
 func NewCache() (*Cache, error) {
@@ -25,7 +26,8 @@ func NewCache() (*Cache, error) {
 	}
 
 	return &Cache{
-		Addr: addr,
-		DB:   db,
+		Addr:     addr,
+		DB:       db,
+		Password: getenvDefault("CACHE_PASSWORD", ""),
 	}, nil
 }

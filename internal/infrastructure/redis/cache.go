@@ -16,8 +16,9 @@ type CacheClient struct {
 }
 
 type CacheParams struct {
-	Addr string
-	DB   int
+	Addr     string
+	DB       int
+	Password string
 }
 
 func (p CacheParams) validate() error {
@@ -43,6 +44,7 @@ func NewCacheClient(params CacheParams) (*CacheClient, error) {
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:         params.Addr,
 		DB:           params.DB,
+		Password:     params.Password,
 		MinIdleConns: 2,
 	})
 

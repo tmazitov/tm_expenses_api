@@ -37,8 +37,9 @@ func main() {
 			DBName:   c.DB.DBName,
 		},
 		CacheParams: redis.CacheParams{
-			Addr: c.Cache.Addr,
-			DB:   c.Cache.DB,
+			Addr:     c.Cache.Addr,
+			DB:       c.Cache.DB,
+			Password: c.Cache.Password,
 		},
 		GoogleOAuthParams: google.OAuthProviderParams{
 			ClientId: c.GoogleOAuth.ClientId,
